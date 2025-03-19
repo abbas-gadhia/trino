@@ -26,10 +26,10 @@ import io.trino.spi.type.StandardTypes;
 import org.joda.time.chrono.ISOChronology;
 
 import static io.trino.spi.StandardErrorCode.INVALID_FUNCTION_ARGUMENT;
+import static io.trino.spi.type.Timestamps.scaleEpochMillisToMicros;
 import static io.trino.type.DateTimes.getMicrosOfMilli;
 import static io.trino.type.DateTimes.round;
 import static io.trino.type.DateTimes.scaleEpochMicrosToMillis;
-import static io.trino.type.DateTimes.scaleEpochMillisToMicros;
 import static java.lang.Math.toIntExact;
 
 @Description("Add the specified amount of time to the given timestamp")

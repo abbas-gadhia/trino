@@ -67,7 +67,6 @@ import static io.trino.plugin.iceberg.IcebergSessionProperties.isSortedWritingEn
 import static io.trino.plugin.iceberg.IcebergUtil.getTopLevelColumns;
 import static io.trino.plugin.iceberg.PartitionTransforms.getColumnTransform;
 import static io.trino.plugin.iceberg.util.Timestamps.getTimestampTz;
-import static io.trino.plugin.iceberg.util.Timestamps.timestampTzToMicros;
 import static io.trino.spi.block.RowBlock.getRowFieldsFromBlock;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
@@ -81,6 +80,7 @@ import static io.trino.spi.type.TimeType.TIME_MICROS;
 import static io.trino.spi.type.TimestampType.TIMESTAMP_MICROS;
 import static io.trino.spi.type.TimestampWithTimeZoneType.TIMESTAMP_TZ_MICROS;
 import static io.trino.spi.type.Timestamps.PICOSECONDS_PER_MICROSECOND;
+import static io.trino.spi.type.Timestamps.toEpochMicros;
 import static io.trino.spi.type.TinyintType.TINYINT;
 import static io.trino.spi.type.UuidType.UUID;
 import static io.trino.spi.type.UuidType.trinoUuidToJavaUuid;
@@ -513,7 +513,7 @@ public class IcebergPageSink
             return TIMESTAMP_MICROS.getLong(block, position);
         }
         if (type.equals(TIMESTAMP_TZ_MICROS)) {
-            return timestampTzToMicros(getTimestampTz(block, position));
+            return toEpochMicros(getTimestampTz(block, position));
         }
         if (type instanceof VarbinaryType varbinaryType) {
             return varbinaryType.getSlice(block, position).toByteBuffer();

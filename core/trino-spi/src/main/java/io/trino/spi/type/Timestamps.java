@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import static io.trino.spi.type.TimestampType.MAX_PRECISION;
 import static java.lang.Math.floorDiv;
 import static java.lang.Math.floorMod;
+import static java.lang.Math.multiplyExact;
 import static java.time.ZoneOffset.UTC;
 
 public class Timestamps
@@ -123,6 +124,21 @@ public class Timestamps
         }
 
         return (value + 1 - (factor / 2)) / factor;
+    }
+
+    public static long toEpochMicros(LongTimestampWithTimeZone timestampTz)
+    {
+        return toEpochMicros(timestampTz.getEpochMillis(), timestampTz.getPicosOfMilli());
+    }
+
+    public static long toEpochMicros(long epochMillis, int picosOfMilli)
+    {
+        return scaleEpochMillisToMicros(epochMillis) + picosOfMilli / 1_000_000;
+    }
+
+    public static long scaleEpochMillisToMicros(long epochMillis)
+    {
+        return multiplyExact(epochMillis, MICROSECONDS_PER_MILLISECOND);
     }
 
     public static long truncateEpochMicrosToMillis(long epochMicros)

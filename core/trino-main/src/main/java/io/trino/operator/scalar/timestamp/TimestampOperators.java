@@ -19,6 +19,7 @@ import io.trino.spi.function.ScalarOperator;
 import io.trino.spi.function.SqlType;
 import io.trino.spi.type.LongTimestamp;
 import io.trino.spi.type.StandardTypes;
+import io.trino.spi.type.Timestamps;
 import org.joda.time.DateTimeField;
 import org.joda.time.chrono.ISOChronology;
 
@@ -30,7 +31,6 @@ import static io.trino.type.DateTimes.getMicrosOfMilli;
 import static io.trino.type.DateTimes.rescale;
 import static io.trino.type.DateTimes.round;
 import static io.trino.type.DateTimes.scaleEpochMicrosToMillis;
-import static io.trino.type.DateTimes.scaleEpochMillisToMicros;
 import static java.lang.Math.multiplyExact;
 
 public final class TimestampOperators
@@ -107,7 +107,7 @@ public final class TimestampOperators
         {
             long fractionMicros = getMicrosOfMilli(timestamp);
             long result = MONTH_OF_YEAR_UTC.add(scaleEpochMicrosToMillis(timestamp), interval);
-            return scaleEpochMillisToMicros(result) + fractionMicros;
+            return Timestamps.scaleEpochMillisToMicros(result) + fractionMicros;
         }
 
         @LiteralParameters("p")

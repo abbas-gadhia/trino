@@ -60,7 +60,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static io.trino.plugin.iceberg.util.Timestamps.getTimestampTz;
 import static io.trino.plugin.iceberg.util.Timestamps.timestampTzFromMicros;
-import static io.trino.plugin.iceberg.util.Timestamps.timestampTzToMicros;
 import static io.trino.spi.StandardErrorCode.NOT_SUPPORTED;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
@@ -73,6 +72,7 @@ import static io.trino.spi.type.TimestampType.TIMESTAMP_MICROS;
 import static io.trino.spi.type.TimestampWithTimeZoneType.TIMESTAMP_TZ_MICROS;
 import static io.trino.spi.type.Timestamps.PICOSECONDS_PER_MICROSECOND;
 import static io.trino.spi.type.Timestamps.PICOSECONDS_PER_NANOSECOND;
+import static io.trino.spi.type.Timestamps.toEpochMicros;
 import static io.trino.spi.type.UuidType.UUID;
 import static io.trino.spi.type.UuidType.javaUuidToTrinoUuid;
 import static io.trino.spi.type.UuidType.trinoUuidToJavaUuid;
@@ -186,7 +186,7 @@ public final class IcebergAvroDataConversion
             return timestampFromMicros(epochMicros);
         }
         if (type.equals(TIMESTAMP_TZ_MICROS)) {
-            long epochUtcMicros = timestampTzToMicros(getTimestampTz(block, position));
+            long epochUtcMicros = toEpochMicros(getTimestampTz(block, position));
             return timestamptzFromMicros(epochUtcMicros);
         }
         if (type.equals(UUID)) {

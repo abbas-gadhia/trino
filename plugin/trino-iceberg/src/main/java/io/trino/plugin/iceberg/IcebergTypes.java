@@ -34,7 +34,6 @@ import java.util.UUID;
 import static io.airlift.slice.Slices.utf8Slice;
 import static io.trino.plugin.base.io.ByteBuffers.getWrappedBytes;
 import static io.trino.plugin.iceberg.util.Timestamps.timestampTzFromMicros;
-import static io.trino.plugin.iceberg.util.Timestamps.timestampTzToMicros;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.BooleanType.BOOLEAN;
 import static io.trino.spi.type.DateType.DATE;
@@ -45,6 +44,7 @@ import static io.trino.spi.type.TimeType.TIME_MICROS;
 import static io.trino.spi.type.TimestampType.TIMESTAMP_MICROS;
 import static io.trino.spi.type.TimestampWithTimeZoneType.TIMESTAMP_TZ_MICROS;
 import static io.trino.spi.type.Timestamps.PICOSECONDS_PER_MICROSECOND;
+import static io.trino.spi.type.Timestamps.toEpochMicros;
 import static io.trino.spi.type.UuidType.javaUuidToTrinoUuid;
 import static io.trino.spi.type.UuidType.trinoUuidToJavaUuid;
 import static java.lang.Float.floatToIntBits;
@@ -111,7 +111,7 @@ public final class IcebergTypes
         }
 
         if (type.equals(TIMESTAMP_TZ_MICROS)) {
-            return timestampTzToMicros((LongTimestampWithTimeZone) trinoNativeValue);
+            return toEpochMicros((LongTimestampWithTimeZone) trinoNativeValue);
         }
 
         if (type instanceof VarcharType) {

@@ -162,11 +162,6 @@ public final class DateTimes
         return floorMod(epochMicros, MICROSECONDS_PER_MILLISECOND);
     }
 
-    public static long toEpochMicros(long epochMillis, int picosOfMilli)
-    {
-        return scaleEpochMillisToMicros(epochMillis) + picosOfMilli / 1_000_000;
-    }
-
     public static long round(long value, int magnitude)
     {
         return roundToNearest(value, POWERS_OF_TEN[magnitude]);

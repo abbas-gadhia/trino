@@ -41,7 +41,6 @@ import java.util.regex.Pattern;
 
 import static io.airlift.slice.SliceUtf8.offsetOfCodePoint;
 import static io.trino.plugin.iceberg.util.Timestamps.getTimestampTz;
-import static io.trino.plugin.iceberg.util.Timestamps.timestampTzToMicros;
 import static io.trino.spi.predicate.Utils.nativeValueToBlock;
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.DateType.DATE;
@@ -56,6 +55,7 @@ import static io.trino.spi.type.Timestamps.MICROSECONDS_PER_MILLISECOND;
 import static io.trino.spi.type.Timestamps.MILLISECONDS_PER_DAY;
 import static io.trino.spi.type.Timestamps.MILLISECONDS_PER_HOUR;
 import static io.trino.spi.type.Timestamps.PICOSECONDS_PER_MICROSECOND;
+import static io.trino.spi.type.Timestamps.toEpochMicros;
 import static io.trino.spi.type.TypeUtils.readNativeValue;
 import static io.trino.spi.type.UuidType.UUID;
 import static io.trino.spi.type.VarbinaryType.VARBINARY;
@@ -492,7 +492,7 @@ public final class PartitionTransforms
 
     private static int hashTimestampWithTimeZone(Block block, int position)
     {
-        return bucketHash(timestampTzToMicros(getTimestampTz(block, position)));
+        return bucketHash(toEpochMicros(getTimestampTz(block, position)));
     }
 
     private static int hashVarchar(Block block, int position)

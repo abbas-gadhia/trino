@@ -22,8 +22,8 @@ import io.trino.spi.type.LongTimestamp;
 import org.joda.time.chrono.ISOChronology;
 
 import static io.trino.operator.scalar.DateTimeFunctions.getTimestampField;
+import static io.trino.spi.type.Timestamps.scaleEpochMillisToMicros;
 import static io.trino.type.DateTimes.scaleEpochMicrosToMillis;
-import static io.trino.type.DateTimes.scaleEpochMillisToMicros;
 
 @Description("Truncate to the specified precision in the session timezone")
 @ScalarFunction("date_trunc")
